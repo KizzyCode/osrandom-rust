@@ -16,7 +16,6 @@ platform:
 # The Rust feature matrix
 configuration:
   - --features=
-  - --features=crypto_api
 
 
 # General environment vars
