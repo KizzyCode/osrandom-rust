@@ -5,13 +5,14 @@ const TEST_ITERATIONS: usize = 8;
 /// The data lengths for a test
 const TEST_LENS: &[usize] = &[1024 * 1024, 4 * 1024 * 1024, (4 * 1024 * 1024) + 15];
 
-/// A simple function to test the uniform distribution of byte values to catch an all-zero array or similar results of an
-/// API misuse
+/// A simple function to test the uniform distribution of byte values to catch an all-zero array or similar results of
+/// an API misuse
 ///
 /// # Important
-/// This function *does not* attempt to test the randomness of the OS' CSPRNG. It just ensures that each byte occurres with
-/// similar probability. 
-fn test_uniform_dist(buf: &[u8]) {
+/// This function *does not* attempt to test the randomness of the OS' CSPRNG. It just ensures that each byte occurres
+/// with similar probability. It is intended as a smoke test, as a simple API misuse will most likely result in a
+/// non-uniform distribution.
+fn assert_uniform_dist(buf: &[u8]) {
     // Count the occurrences of each byte
     let mut occurrences = vec![0f64; 256];
     buf.iter().for_each(|b| occurrences[*b as usize] += 1.0);
@@ -29,7 +30,7 @@ fn test_uniform_dist(buf: &[u8]) {
 
 /// Tests the random number generator
 #[test]
-fn test() -> io::Result<()> {
+fn provider() -> io::Result<()> {
     // Print the provider
     println!("Using provider: {}", osrandom::provider());
 
@@ -38,7 +39,7 @@ fn test() -> io::Result<()> {
         for len in TEST_LENS {
             // Test the random data
             let buf = osrandom::to_vec(*len)?;
-            test_uniform_dist(&buf)
+            assert_uniform_dist(&buf)
         }
     }
     Ok(())
@@ -47,12 +48,12 @@ fn test() -> io::Result<()> {
 /// Test `test_uniform_dist` itself
 #[test]
 #[should_panic]
-fn test_test_uniform_dist() {
+fn faulty_provider() {
     // Generate non-uniform data set
     let mut non_uniform_data = vec![0; (4 * 1024 * 1024) + 15];
     non_uniform_data.extend(vec![7; (4 * 1024 * 1024) + 15]);
     non_uniform_data.extend(vec![255; (4 * 1024 * 1024) + 15]);
 
     // Test function
-    test_uniform_dist(&non_uniform_data);
+    assert_uniform_dist(&non_uniform_data);
 }

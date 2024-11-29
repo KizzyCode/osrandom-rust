@@ -1,19 +1,19 @@
 [package]
 name = "osrandom"
 edition = "2021"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Keziah Biermann <development@kizzycode.de>"]
 description = "An interface to the OS' secure random number generator"
 keywords = ["Crypto", "Random", "CSPRNG", "PRNG", "RNG"]
 license = "BSD-2-Clause OR MIT"
-repository = "https://github.com/KizzyCode/crypto_api-rust"
+repository = "https://github.com/KizzyCode/osrandom-rust"
 readme = "README.md"
 
 [badges]
-appveyor = { repository = "KizzyCode/crypto_api-rust" }
+appveyor = { repository = "KizzyCode/osrandom-rust" }
 maintenance = { status = "passively-maintained" }
-is-it-maintained-open-issues = { repository = "KizzyCode/crypto_api-rust" }
-is-it-maintained-issue-resolution = { repository = "KizzyCode/crypto_api-rust" }
+is-it-maintained-open-issues = { repository = "KizzyCode/osrandom-rust" }
+is-it-maintained-issue-resolution = { repository = "KizzyCode/osrandom-rust" }
 
 
 [features]
@@ -23,7 +23,7 @@ default = []
 [dependencies]
 
 [build-dependencies]
-cc = "1.0.73"
+cc = "1.2.2"
 
 
 [profile.release]
